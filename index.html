@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="style.css"/>
+    <script type="module" src="app.js" async></script>
+
+
+    <title>Cadastro e Listagem de Produtos - Oak</title>
+</head>
+<body>
+    
+
+    <div class="container-principal">
+
+
+        <div class="container-form">
+
+            <h1>Cadastro de produtos</h1>
+
+
+
+            <form class="container-form-input">
+                
+
+                <div class="item-info">
+                    <label>Nome do produto</label>
+                    <input type="text" id="product-name" name="product-name">
+                </div>
+
+                <div class="item-info">
+                    <label>Descrição do produto</label>
+                    <input type="text" id="product-description" name="product-description">
+                </div>
+                    
+                <div class="item-info">
+                    <label>Valor do produto</label>
+                    <input type="number" id="product-price" name="product-price" min="0">
+                </div>
+
+
+                <div class="form_action--button">
+                    <button class="register-product">Cadastrar</button>
+                    <button class="see-list">Ver Produtos</button>
+                </div>
+
+            </form>
+
+
+        </div>
+
+
+        <div class="product-list hide">
+
+
+            <h2>Lista de Produtos</h2>
+
+                <table class="container-info-list-product">
+                              <thead>
+                    <tr class="listOfProduct">
+                      <th>Nome</th>
+                      <th>Valor</th>
+                                </tr>
+                  </thead>
+                  <button id="sort-button">Ordenar produtos</button>
+                  <tbody id="product-list-oak">
+
+                  </tbody>
+                </table>
+            
+                <button class="add-button">Adicionar Produto</button>
+        </div>
+
+
+    </div>
+
+</body>
+</html>
