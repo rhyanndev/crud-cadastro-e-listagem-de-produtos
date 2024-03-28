@@ -19,6 +19,7 @@ function registerProductinList (){
     event.preventDefault(); // Evitar o comportamento padrão do formulário
 
     var nameProduct = $nameProduct.value.trim(); 
+    var productDesc = $productDescription.value.trim();
     var productPrice = parseFloat($productPrice.value);
 
     // Verificar se os valores inseridos são válidos
@@ -30,7 +31,8 @@ function registerProductinList (){
             // Cria um objeto com os dados do produto
             var product = {
                 name: nameProduct,
-                price: productPrice.toFixed(2)
+                price: productPrice.toFixed(2),
+                description : productDesc
             };
 
             // Recupera os produtos já armazenados no localStorage
