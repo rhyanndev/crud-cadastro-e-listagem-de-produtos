@@ -5,14 +5,12 @@ const $productPrice = document.getElementById("product-price");
 const $listContainer = document.getElementById("product-list-oak");
 const $sortButton = document.getElementById("sort-button");
 const $productList = document.querySelector(".product-list");
+const $addNewProduct = document.querySelector(".add-new-product-button");
 const $seeListProduct = document.querySelector(".see-list");
-const $containerForm = document.querySelector(".container-form");
-
-
+const $registerProductForm = document.querySelector(".container-form");
 
 $registerProduct.addEventListener("click", registerProductinList)
 $sortButton.addEventListener("click", sortTableByPrice);
-$seeListProduct.addEventListener("click", seeList);
 
 function registerProductinList (){
 
@@ -23,57 +21,68 @@ function registerProductinList (){
     var productPrice = parseFloat($productPrice.value);
 
     // Verificar se os valores inseridos são válidos
-    if (nameProduct && !isNaN(productPrice)) {
-
-        if(productPrice > 0){
+    if (nameProduct && productDesc && !isNaN(productPrice)) {
 
 
-            // Cria um objeto com os dados do produto
-            var product = {
-                name: nameProduct,
-                price: productPrice.toFixed(2),
-                description : productDesc
-            };
+        // Recupera os produtos já armazenados no localStorage
+        var productList = JSON.parse(localStorage.getItem("products")) || [];
 
-            // Recupera os produtos já armazenados no localStorage
-            var productList = JSON.parse(localStorage.getItem("products")) || [];
+        // Verificar se o nome ou descrição já existe em algum produto
+        var existingProduct = productList.find(function(product) {
+            return product.name === nameProduct || product.description === productDesc;
+        });
 
-            // Adiciona o novo produto à lista
-            productList.push(product);
+        if (existingProduct) {
+            alert("Este produto já foi cadastrado.");
+        }
 
-            // Atualiza os produtos no localStorage
-            localStorage.setItem("products", JSON.stringify(productList));
+        else {
 
-        
+            if(productPrice > 0){
+                // Cria um objeto com os dados do produto
+                var product = {
+                    name: nameProduct,
+                    price: productPrice.toFixed(2),
+                    description : productDesc
+                };
+                
+                // Adiciona o novo produto à lista
+                productList.push(product);
+                
+                // Atualiza os produtos no localStorage
+                localStorage.setItem("products", JSON.stringify(productList));
+                
+                
                 //Mostrando o que foi armazenado no localStorage
                 displayProductsFromStorage();
-
-
-        // Limpa os campos do formulário após o cadastro
-        clearLinesInForm();
-
-        // Vai diretamente para a Lista de produtos
-        seeList();
+                
+                
+                // Limpa os campos do formulário após o cadastro
+                clearLinesInForm();
+                
+                // Vai diretamente para a Lista de produtos
+                seeList();
+            }
+            else {
+                alert("O preço é inválido");  
+            }
         }
-        else {
-            alert("O preço inválido");
-            
+        } else {
+            alert("Por favor, preencha todos os campos corretamente.");
         }
-
-    } else {
-        alert("Por favor, preencha todos os campos corretamente.");
-    }
-
+        
 }
 
 // Função para exibir os produtos armazenados no localStorage
 function displayProductsFromStorage() {
+
     // Recupera os produtos armazenados no localStorage
     var productList = JSON.parse(localStorage.getItem("products")) || [];
 
-    // Limpa a lista de produtos atual
+
     $listContainer.innerHTML = "";
 
+    
     // Adiciona cada produto à lista na tabela
     productList.forEach(function(product) {
         var newRow = document.createElement("tr");
@@ -121,15 +130,11 @@ $sortButton.addEventListener("click", sortProductsInStorageByPrice);
 
 
 
-
-
-const $registerProductForm = document.querySelector(".container-form");
-
-
 function seeList() {
-    // Remover classe hide do formulário de cadastro e adicionar à lista de produtos
-    $registerProductForm.classList.add("hide");
+    // Exibir apenas a lista de produtos, independentemente do estado atual dos elementos
     $productList.classList.remove("hide");
+    $registerProductForm.classList.add("hide");
+
 }
 
 function seeForm() {
@@ -139,14 +144,18 @@ function seeForm() {
 }
 
 // Adicionar event listeners aos botões para ver a lista de produtos e o formulário de cadastro
-$seeListProduct.addEventListener("click", seeList);
-document.querySelector(".add-button").addEventListener("click", seeForm);
+
+$addNewProduct.addEventListener("click", seeForm);
+$seeListProduct.addEventListener("click", function() {
+    console.log("Botão 'Ver Produtos' foi clicado!");
+    seeList(); // Verifique se a função seeList() está sendo chamada
+});
 
 
 
 
 
-// Defina uma função para remover um produto do localStorage e atualizar a exibição
+// Função para remover um produto do localStorage e atualizar a exibição
 function removeProductFromStorage(name) {
     var productList = JSON.parse(localStorage.getItem("products")) || [];
     var index = productList.findIndex(product => product.name === name);
@@ -159,6 +168,7 @@ function removeProductFromStorage(name) {
 
 // Adicione um event listener para lidar com cliques nos botões de remoção
 $listContainer.addEventListener("click", function(event) {
+
     if (event.target.classList.contains("remove-button")) {
         var productName = event.target.getAttribute("data-name");
         removeProductFromStorage(productName);
@@ -176,5 +186,3 @@ function clearLinesInForm(){
 
 }
 
-//Para sempre mostrar os produtos no localStorage
-displayProductsFromStorage();
