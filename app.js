@@ -171,7 +171,22 @@ $listContainer.addEventListener("click", function(event) {
 
     if (event.target.classList.contains("remove-button")) {
         var productName = event.target.getAttribute("data-name");
-        removeProductFromStorage(productName);
+
+        var productMessage;
+        var deletionConfirmation =confirm("Tem certeza que deseja excluir o produto?");
+        if (deletionConfirmation==true)
+            {
+                
+                removeProductFromStorage(productName);
+                productMessage ="Produto excluído com sucesso!";
+                alert(productMessage);
+            }
+        else
+            {
+                productMessage="Produto permanceu no estoque!";
+                alert(productMessage);
+            }
+        
     }
 });
 
