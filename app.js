@@ -132,6 +132,7 @@ $sortButton.addEventListener("click", sortProductsInStorageByPrice);
 
 function seeList() {
     // Exibir apenas a lista de produtos, independentemente do estado atual dos elementos
+    event.preventDefault();
     $productList.classList.remove("hide");
     $registerProductForm.classList.add("hide");
 
